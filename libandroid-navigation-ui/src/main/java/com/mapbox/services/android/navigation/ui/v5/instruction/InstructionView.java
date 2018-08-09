@@ -142,7 +142,7 @@ public class InstructionView extends RelativeLayout implements FeedbackBottomShe
     initializeInstructionListRecyclerView();
     initializeAnimations();
     initializeStepListClickListener();
-    ImageCoordinator.getInstance().initialize(getContext());
+    ImageCreator.getInstance().initialize(getContext());
   }
 
   @Override
@@ -837,7 +837,7 @@ public class InstructionView extends RelativeLayout implements FeedbackBottomShe
     updateThenStep(model);
     if (newStep(model.getProgress())) {
       LegStep upComingStep = model.getProgress().currentLegProgress().upComingStep();
-      ImageCoordinator.getInstance().prefetchImageCache(upComingStep);
+      ImageCreator.getInstance().prefetchImageCache(upComingStep);
     }
   }
 
