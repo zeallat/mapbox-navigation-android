@@ -417,6 +417,7 @@ public class NavigationView extends CoordinatorLayout implements LifecycleObserv
     initializeNavigationEventDispatcher();
     initializeNavigationPresenter();
     initializeInstructionListListener();
+    initializeFeedbackClickListener();
     initializeSummaryBottomSheet();
   }
 
@@ -452,6 +453,14 @@ public class NavigationView extends CoordinatorLayout implements LifecycleObserv
   private void initializeInstructionListListener() {
     instructionView.setInstructionListListener(new NavigationInstructionListListener(navigationPresenter,
       navigationViewEventDispatcher));
+  }
+
+  private void initializeSoundClickListener() {
+    instructionView.setSoundClickListener(new SoundClickListener(navigationViewEventDispatcher));
+  }
+
+  private void initializeFeedbackClickListener() {
+    instructionView.setFeedbackListener();
   }
 
   private void updateSavedInstanceStateMapStyle(@Nullable Bundle savedInstanceState) {

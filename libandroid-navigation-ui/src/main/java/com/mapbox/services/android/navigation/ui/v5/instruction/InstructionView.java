@@ -41,6 +41,7 @@ import com.mapbox.api.directions.v5.models.IntersectionLanes;
 import com.mapbox.api.directions.v5.models.LegStep;
 import com.mapbox.services.android.navigation.ui.v5.NavigationViewModel;
 import com.mapbox.services.android.navigation.ui.v5.R;
+import com.mapbox.services.android.navigation.ui.v5.SoundClickListener;
 import com.mapbox.services.android.navigation.ui.v5.ThemeSwitcher;
 import com.mapbox.services.android.navigation.ui.v5.alert.AlertView;
 import com.mapbox.services.android.navigation.ui.v5.feedback.FeedbackBottomSheet;
@@ -48,6 +49,7 @@ import com.mapbox.services.android.navigation.ui.v5.feedback.FeedbackBottomSheet
 import com.mapbox.services.android.navigation.ui.v5.feedback.FeedbackItem;
 import com.mapbox.services.android.navigation.ui.v5.instruction.maneuver.ManeuverView;
 import com.mapbox.services.android.navigation.ui.v5.instruction.turnlane.TurnLaneAdapter;
+import com.mapbox.services.android.navigation.ui.v5.listeners.FeedbackListener;
 import com.mapbox.services.android.navigation.ui.v5.listeners.InstructionListListener;
 import com.mapbox.services.android.navigation.ui.v5.summary.list.InstructionListAdapter;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationConstants;
@@ -107,6 +109,8 @@ public class InstructionView extends RelativeLayout implements FeedbackBottomShe
   private LegStep currentStep;
   private NavigationViewModel navigationViewModel;
   private InstructionListListener instructionListListener;
+  private SoundClickListener soundClickListener;
+  private FeedbackListener feedbackListener;
 
   private DistanceFormatter distanceFormatter;
   private String language = "";
@@ -131,6 +135,14 @@ public class InstructionView extends RelativeLayout implements FeedbackBottomShe
     this.instructionListListener = instructionListListener;
   }
 
+  public void setSoundClickListener(SoundClickListener soundClickListener) {
+    this.soundClickListener = soundClickListener;
+  }
+
+  public void setFeedbackListener(FeedbackListener feedbackListener) {
+    this.feedbackListener = feedbackListener;
+  }
+
   /**
    * Once this view has finished inflating, it will bind the views.
    * <p>
@@ -138,6 +150,7 @@ public class InstructionView extends RelativeLayout implements FeedbackBottomShe
    * and animations used to show / hide views.
    */
   @Override
+
   protected void onFinishInflate() {
     super.onFinishInflate();
     bind();
@@ -243,6 +256,7 @@ public class InstructionView extends RelativeLayout implements FeedbackBottomShe
       long duration = NavigationConstants.FEEDBACK_BOTTOM_SHEET_DURATION;
       FeedbackBottomSheet.newInstance(this, duration).show(fragmentManager, FeedbackBottomSheet.TAG);
       navigationViewModel.isFeedbackShowing.setValue(true);
+      feedbackListener.onFeedbackOpened();
     }
   }
 
@@ -601,6 +615,9 @@ public class InstructionView extends RelativeLayout implements FeedbackBottomShe
       @Override
       public void onClick(View view) {
         navigationViewModel.setMuted(toggleMute());
+        if (soundClickListener != null) {
+          soundClickListener.onClick(view);
+        }
       }
     });
     feedbackFab.setVisibility(VISIBLE);
@@ -608,6 +625,7 @@ public class InstructionView extends RelativeLayout implements FeedbackBottomShe
       @Override
       public void onClick(View view) {
         navigationViewModel.recordFeedback(FeedbackEvent.FEEDBACK_SOURCE_UI);
+        feedbackListener.onFeedbackOpened();
         showFeedbackBottomSheet();
       }
     });

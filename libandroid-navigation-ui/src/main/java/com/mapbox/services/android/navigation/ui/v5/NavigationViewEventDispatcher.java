@@ -3,6 +3,7 @@ package com.mapbox.services.android.navigation.ui.v5;
 
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior.BottomSheetCallback;
+import android.util.Log;
 import android.view.View;
 
 import com.mapbox.api.directions.v5.models.BannerInstructions;
@@ -192,11 +193,15 @@ class NavigationViewEventDispatcher {
   }
 
   void onRecenterClick(View view) {
-
+    if (recenterClickListener != null) {
+      recenterClickListener.onClick(view);
+    }
   }
 
   void onSoundClick(View view) {
-
+    if (soundClickListener != null) {
+      soundClickListener.onClick(view);
+    }
   }
 
   private void assignProgressChangeListener(NavigationViewOptions navigationViewOptions, MapboxNavigation navigation) {

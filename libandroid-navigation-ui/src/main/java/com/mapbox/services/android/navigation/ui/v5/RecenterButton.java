@@ -22,6 +22,8 @@ import android.view.animation.TranslateAnimation;
  */
 public class RecenterButton extends CardView {
 
+
+
   private Animation slideUpBottom;
 
   public RecenterButton(Context context) {
