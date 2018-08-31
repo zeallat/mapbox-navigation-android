@@ -2,6 +2,7 @@ package com.mapbox.services.android.navigation.ui.v5;
 
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior.BottomSheetCallback;
+import android.view.View;
 
 import com.google.auto.value.AutoValue;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
@@ -58,6 +59,12 @@ public abstract class NavigationViewOptions extends NavigationUiOptions {
   @Nullable
   public abstract SpeechPlayer speechPlayer();
 
+  @Nullable
+  public abstract View.OnClickListener recenterClickListener();
+
+  @Nullable
+  public abstract View.OnClickListener soundClickListener();
+
   @AutoValue.Builder
   public abstract static class Builder {
 
@@ -72,6 +79,14 @@ public abstract class NavigationViewOptions extends NavigationUiOptions {
     public abstract Builder shouldSimulateRoute(boolean shouldSimulateRoute);
 
     public abstract Builder waynameChipEnabled(boolean waynameChipEnabled);
+
+    public abstract Builder showFeedbackFab(boolean showFeedbackFab);
+
+    public abstract Builder showSoundFab(boolean showSoundFab);
+
+    public abstract Builder showProblemAlertView(boolean showProblemAlertView);
+
+    public abstract Builder showFeedbackSubmittedAlertView(boolean showFeedbackSubmittedAlertView);
 
     public abstract Builder navigationOptions(MapboxNavigationOptions navigationOptions);
 
@@ -97,6 +112,10 @@ public abstract class NavigationViewOptions extends NavigationUiOptions {
 
     public abstract Builder speechPlayer(SpeechPlayer speechPlayer);
 
+    public abstract Builder recenterClickListener(View.OnClickListener onClickListener);
+
+    public abstract Builder soundClickListener(View.OnClickListener onClickListener);
+
     public abstract NavigationViewOptions build();
   }
 
@@ -104,6 +123,10 @@ public abstract class NavigationViewOptions extends NavigationUiOptions {
     return new AutoValue_NavigationViewOptions.Builder()
       .navigationOptions(MapboxNavigationOptions.builder().build())
       .shouldSimulateRoute(false)
-      .waynameChipEnabled(true);
+      .waynameChipEnabled(true)
+      .showFeedbackFab(true)
+      .showSoundFab(true)
+      .showProblemAlertView(true)
+      .showFeedbackSubmittedAlertView(true);
   }
 }

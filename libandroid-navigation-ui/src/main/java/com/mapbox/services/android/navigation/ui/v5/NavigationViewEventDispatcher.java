@@ -12,9 +12,9 @@ import com.mapbox.services.android.navigation.ui.v5.feedback.FeedbackItem;
 import com.mapbox.services.android.navigation.ui.v5.listeners.BannerInstructionsListener;
 import com.mapbox.services.android.navigation.ui.v5.listeners.FeedbackListener;
 import com.mapbox.services.android.navigation.ui.v5.listeners.InstructionListListener;
-import com.mapbox.services.android.navigation.ui.v5.listeners.SpeechAnnouncementListener;
 import com.mapbox.services.android.navigation.ui.v5.listeners.NavigationListener;
 import com.mapbox.services.android.navigation.ui.v5.listeners.RouteListener;
+import com.mapbox.services.android.navigation.ui.v5.listeners.SpeechAnnouncementListener;
 import com.mapbox.services.android.navigation.ui.v5.voice.SpeechAnnouncement;
 import com.mapbox.services.android.navigation.v5.milestone.MilestoneEventListener;
 import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigation;
@@ -36,6 +36,8 @@ class NavigationViewEventDispatcher {
   private InstructionListListener instructionListListener;
   private SpeechAnnouncementListener speechAnnouncementListener;
   private BannerInstructionsListener bannerInstructionsListener;
+  private View.OnClickListener recenterClickListener;
+  private View.OnClickListener soundClickListener;
 
   /**
    * Initializes the listeners in the dispatcher, as well as the listeners in the {@link MapboxNavigation}
@@ -52,6 +54,8 @@ class NavigationViewEventDispatcher {
     assignInstructionListListener(navigationViewOptions.instructionListListener());
     assignSpeechAnnouncementListener(navigationViewOptions.speechAnnouncementListener());
     assignBannerInstructionsListener(navigationViewOptions.bannerInstructionsListener());
+    assignRecenterClickListener(navigationViewOptions.recenterClickListener());
+    assignSoundClickListener(navigationViewOptions.soundClickListener());
   }
 
   void onDestroy(@Nullable MapboxNavigation navigation) {
@@ -87,6 +91,14 @@ class NavigationViewEventDispatcher {
 
   void assignBannerInstructionsListener(@Nullable BannerInstructionsListener bannerInstructionsListener) {
     this.bannerInstructionsListener = bannerInstructionsListener;
+  }
+
+  void assignRecenterClickListener(@Nullable View.OnClickListener onClickListener) {
+    this.recenterClickListener = onClickListener;
+  }
+
+  void assignSoundClickListener(@Nullable View.OnClickListener onClickListener) {
+    this.soundClickListener = onClickListener;
   }
 
   void onFeedbackOpened() {
@@ -177,6 +189,14 @@ class NavigationViewEventDispatcher {
       return bannerInstructionsListener.willDisplay(instructions);
     }
     return instructions;
+  }
+
+  void onRecenterClick(View view) {
+
+  }
+
+  void onSoundClick(View view) {
+
   }
 
   private void assignProgressChangeListener(NavigationViewOptions navigationViewOptions, MapboxNavigation navigation) {
