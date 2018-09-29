@@ -29,11 +29,9 @@ import retrofit2.Response
 import timber.log.Timber
 import java.util.Locale.US
 
-class ExampleViewModel(application: Application) : AndroidViewModel(application) {
+private const val ONE_SECOND_INTERVAL = 1000
 
-  companion object {
-    const val ONE_SECOND_INTERVAL = 1000
-  }
+class ExampleViewModel(application: Application) : AndroidViewModel(application) {
 
   val location: MutableLiveData<Location> = MutableLiveData()
   val routes: MutableLiveData<List<DirectionsRoute>> = MutableLiveData()

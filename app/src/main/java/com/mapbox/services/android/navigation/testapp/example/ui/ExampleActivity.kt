@@ -32,15 +32,16 @@ import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigation
 import com.mapbox.services.android.navigation.v5.routeprogress.RouteProgress
 import kotlinx.android.synthetic.main.activity_example.*
 
+private const val ZERO_PADDING = 0
+private const val BOTTOMSHEET_MULTIPLIER = 4
+
 class ExampleActivity : AppCompatActivity(), ExampleView {
 
   private val permissionsManager = PermissionsManager(this)
-  private lateinit var presenter: ExamplePresenter
   private var map: NavigationMapboxMap? = null
-
-  companion object {
-    const val ZERO_PADDING = 0
-    const val BOTTOMSHEET_MULTIPLIER = 4
+  private val presenter by lazy(mode = LazyThreadSafetyMode.NONE) {
+    val viewModel = ViewModelProviders.of(this).get(ExampleViewModel::class.java)
+    ExamplePresenter(this, viewModel)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -202,11 +203,11 @@ class ExampleActivity : AppCompatActivity(), ExampleView {
   }
 
   override fun updateInstructionViewWith(progress: RouteProgress) {
-    instructionView.update(progress)
+    instructionView.updateDistanceWith(progress)
   }
 
-  override fun updateInstructionViewWith(progress: RouteProgress, milestone: Milestone) {
-    TODO("not implemented")
+  override fun updateInstructionViewWith(milestone: Milestone) {
+    instructionView.updateBannerInstructionsWith(milestone)
   }
 
   override fun addMapProgressChangeListener(navigation: MapboxNavigation) {
@@ -259,9 +260,6 @@ class ExampleActivity : AppCompatActivity(), ExampleView {
   }
 
   private fun setupWith(savedInstanceState: Bundle?) {
-    val viewModel = ViewModelProviders.of(this).get(ExampleViewModel::class.java)
-    presenter = ExamplePresenter(this, viewModel)
-
     mapView.onCreate(savedInstanceState)
 
     instructionView.retrieveFeedbackButton().hide()
